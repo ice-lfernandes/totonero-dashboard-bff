@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 
 @FeignClient(
     value = "alert-service",
-    url = "http://localhost:8020/alert"
+    url = "\${integration.alert-service.url}/alert"
 )
 interface AlertClient {
 

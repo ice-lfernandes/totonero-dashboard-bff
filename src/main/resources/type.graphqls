@@ -1,0 +1,76 @@
+type MatchStat {
+    matchId: String!,
+    stats: [Stats]!
+    match: Match!
+}
+
+type Match {
+    matchId: String!
+    leagueName: String!
+    minutesOfMatch: Int!
+    homeName: String!
+    awayName: String!
+    homeScore: Int!
+    awayScore: Int!
+    homeRed: Int!
+    awayRed: Int!
+    homeCorner: Int!
+    awayCorner: Int!
+}
+
+type Stats {
+    id: ID!,
+    home: String!
+    away: String!
+    typeStat: TypeStat!
+}
+
+enum TypeStat {
+    FIRST_KICK
+    FIRST_CORNER
+    FIRST_YELLOW_CARD
+    KICK
+    SHOTS_ON_TARGET
+    FOULS
+    CORNER
+    CORNER_OVERTIME
+    FREE_KICK
+    OFFSIDE
+    OWN_GOAL
+    YELLOW_CARD
+    YELLOW_CARD_OVERTIME
+    RED_CARD
+    BALL_POSSESSION
+    HEADER
+    SAVE
+    GOALKEEPER_COME_OUT
+    DISPOSSESSED
+    SUCCESSFUL_INTERCEPT
+    CHALLENGE
+    LONG_PASS
+    SHORT_PASS
+    ASSIST
+    SUCCESSFUL_CENTER
+    FIRST_SUBSTITUTION
+    LAST_SUBSTITUTION
+    FIRST_OFFSIDE
+    LAST_OFFSIDE
+    SUBSTITUTION
+    LAST_CORNER
+    LAST_YELLOW_CARD
+    SUBSTITUTION_OVERTIME
+    OFFSIDE_OVERTIME
+    SHOTS_OFF_TARGET
+    WOODWORK
+    SUCCESSFUL_HEADER
+    SHOT_BLOCKED
+    TACKLE
+    BEAT
+    THROW_IN
+    PASSES
+    PASSES_SUCCESS
+    ATTACKS
+    DANGEROUS_ATTACKS
+    FIRST_HALF_CORNER
+    FIRST_HALF_POSSESSION
+}

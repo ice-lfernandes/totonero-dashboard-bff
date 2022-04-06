@@ -14,20 +14,25 @@ class AlertService(val alertClient: AlertClient) {
 
     private val log: Logger = LoggerFactory.getLogger(AlertService::class.qualifiedName)
 
-    fun findMatchesAlive() : List<MatchStat> =
+    fun findMatchesAlive(): List<MatchStat> =
         try {
             alertClient.findMatches().let { response ->
                 if (response.statusCode == HttpStatus.OK) {
-                    response.body!!.also {
-                        log.info("stage=integration-alert-service-success")
-                    }
+                    return response.body!!.matches
+                        .also {
+                            log.info("stage=integration-alert-service-success")
+                        }
                 }
                 log.error("stage=error-integration-alert-service, msg=matches not found, status=${response.statusCode}")
                 throw IntegrationException("matches-not-found")
             }
         } catch (exception: FeignException) {
-            log.error("stage=error-integration-alert-service, msg=${exception.message}, status=${exception.status()}", exception)
+            log.error(
+                "stage=error-integration-alert-service, msg=${exception.message}, status=${exception.status()}",
+                exception
+            )
             throw IntegrationException(exception.message!!)
         }
+
 
 }
