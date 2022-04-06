@@ -1,0 +1,7 @@
+type Query {
+    client: Client
+}
+
+type Client {
+    name: String!
+}
