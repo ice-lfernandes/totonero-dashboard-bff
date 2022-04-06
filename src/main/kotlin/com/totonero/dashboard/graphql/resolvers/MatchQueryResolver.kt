@@ -1,6 +1,8 @@
 package com.totonero.dashboard.graphql.resolvers
 
-import com.totonero.dashboard.integration.alert.dto.MatchStat
+import com.totonero.dashboard.graphql.dto.Match
+import com.totonero.dashboard.graphql.dto.Team
+import com.totonero.dashboard.integration.alert.dto.TypeStat
 import com.totonero.dashboard.integration.alert.service.AlertService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.stereotype.Component
@@ -8,6 +10,40 @@ import org.springframework.stereotype.Component
 @Component
 class MatchQueryResolver(val alertService: AlertService) : GraphQLQueryResolver {
 
-    fun matches(): List<MatchStat> = alertService.findMatchesAlive()
+    fun matches(): List<Match> = alertService.findMatchesAlive().map { matchStats ->
+        Match(
+            matchId = matchStats.matchId,
+            leagueName = matchStats.match.leagueName,
+            minutesOfMatch = matchStats.match.minutesOfMatch.toString(),
+            home = Team(
+                name = matchStats.match.homeName,
+                score = matchStats.match.homeScore,
+                ballPossession = matchStats.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
+                    .let { stats -> stats?.home ?: "0" },
+                shotOnGoal = (matchStats.stats.find { it.typeStat == TypeStat.SHOTS_ON_TARGET }
+                    .let { stats -> stats?.home ?: "0" }).toInt(),
+                shotOffGoal = (matchStats.stats.find { it.typeStat == TypeStat.SHOTS_OFF_TARGET }
+                    .let { stats -> stats?.home ?: "0" }).toInt(),
+                cornerKick = (matchStats.stats.find { it.typeStat == TypeStat.CORNER }
+                    .let { stats -> stats?.home ?: "0" }).toInt(),
+                redCard = (matchStats.stats.find { it.typeStat == TypeStat.RED_CARD }
+                    .let { stats -> stats?.home ?: "0" }).toInt()
+            ),
+            away = Team(
+                name = matchStats.match.awayName,
+                score = matchStats.match.awayScore,
+                ballPossession = matchStats.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
+                    .let { stats -> stats?.away ?: "0" },
+                shotOnGoal = (matchStats.stats.find { it.typeStat == TypeStat.SHOTS_ON_TARGET }
+                    .let { stats -> stats?.away ?: "0" }).toInt(),
+                shotOffGoal = (matchStats.stats.find { it.typeStat == TypeStat.SHOTS_OFF_TARGET }
+                    .let { stats -> stats?.away ?: "0" }).toInt(),
+                cornerKick = (matchStats.stats.find { it.typeStat == TypeStat.CORNER }
+                    .let { stats -> stats?.away ?: "0" }).toInt(),
+                redCard = (matchStats.stats.find { it.typeStat == TypeStat.RED_CARD }
+                    .let { stats -> stats?.away ?: "0" }).toInt()
+            )
+        )
+    }
 
 }
