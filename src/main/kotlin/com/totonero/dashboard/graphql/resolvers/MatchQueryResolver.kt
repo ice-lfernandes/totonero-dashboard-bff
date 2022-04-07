@@ -13,10 +13,12 @@ class MatchQueryResolver(val alertService: AlertService) : GraphQLQueryResolver 
     fun matches(): List<Match> = alertService.findMatchesAlive().map { matchStats ->
         Match(
             matchId = matchStats.matchId,
+            score = (Math.random() * 1200).toInt(),
             leagueName = matchStats.match.leagueName,
             minutesOfMatch = matchStats.match.minutesOfMatch.toString(),
             home = Team(
                 name = matchStats.match.homeName,
+                logo = alertService.findTeamProfile(matchStats.match.homeId).logo,
                 score = matchStats.match.homeScore,
                 ballPossession = matchStats.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                     .let { stats -> stats?.home ?: "0" },
@@ -31,6 +33,7 @@ class MatchQueryResolver(val alertService: AlertService) : GraphQLQueryResolver 
             ),
             away = Team(
                 name = matchStats.match.awayName,
+                logo = alertService.findTeamProfile(matchStats.match.awayId).logo,
                 score = matchStats.match.awayScore,
                 ballPossession = matchStats.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                     .let { stats -> stats?.away ?: "0" },

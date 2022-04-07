@@ -12,6 +12,8 @@ data class Match(
     val matchId: String = "",
     val leagueName: String = "",
     var minutesOfMatch: Int = 0,
+    val homeId: String = "",
+    val awayId: String = "",
     val homeName: String = "",
     val awayName: String = "",
     val homeScore: Int = 0,

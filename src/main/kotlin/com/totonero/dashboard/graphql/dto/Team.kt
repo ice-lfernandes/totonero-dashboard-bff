@@ -7,5 +7,6 @@ data class Team(
     val shotOnGoal: Int = 0,
     val shotOffGoal: Int = 0,
     val cornerKick: Int = 0,
-    val redCard: Int = 0
+    val redCard: Int = 0,
+    val logo: String = ""
 )

@@ -1,7 +1,8 @@
 type Match {
-    matchId: String!,
-    leagueName: String!,
-    minutesOfMatch: String!,
+    score: Int
+    matchId: String!
+    leagueName: String!
+    minutesOfMatch: String!
     home: Team!
     away: Team!
 }
@@ -14,4 +15,5 @@ type Team {
     shotOnGoal: Int
     shotOffGoal: Int
     ballPossession: String
+    logo: String
 }

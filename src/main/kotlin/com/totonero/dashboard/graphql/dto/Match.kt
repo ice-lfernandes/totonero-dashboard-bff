@@ -5,5 +5,6 @@ data class Match(
     val leagueName: String = "",
     val minutesOfMatch: String = "",
     val home: Team = Team(),
-    val away: Team = Team()
+    val away: Team = Team(),
+    val score: Int = 0
 )
