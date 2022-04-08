@@ -5,6 +5,7 @@ type Match {
     minutesOfMatch: String!
     home: Team!
     away: Team!
+    betName: String!
 }
 
 type Team {

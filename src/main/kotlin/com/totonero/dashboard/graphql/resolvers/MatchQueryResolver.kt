@@ -17,6 +17,7 @@ class MatchQueryResolver(
     fun matches(): List<Match> = alertService.findMatchesAlive().map { dashboardDTO ->
         Match(
             matchId = dashboardDTO.matchId.toString(),
+            betName = dashboardDTO.betName,
             score = analysisService.getScore(
                 betId = dashboardDTO.betId,
                 rulesId = dashboardDTO.rulesId,

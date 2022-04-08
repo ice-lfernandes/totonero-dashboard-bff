@@ -9,6 +9,7 @@ data class DashboardDTO(
     val homeScore: Int = 0,
     val awayScore: Int = 0,
     val betId: Long = 1L,
+    val betName: String = "",
     val rulesId: List<Long> = listOf(),
     val favoriteTeamId: Long = 1L,
     val stats: List<Stats> = listOf(),
