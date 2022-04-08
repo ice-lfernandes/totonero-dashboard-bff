@@ -2,6 +2,7 @@ package com.totonero.dashboard.integration.alert.service
 
 import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.integration.alert.client.AlertClient
+import com.totonero.dashboard.integration.alert.dto.DashboardDTO
 import com.totonero.dashboard.integration.alert.dto.MatchStat
 import com.totonero.dashboard.integration.alert.dto.TeamDTO
 import feign.FeignException
@@ -15,11 +16,11 @@ class AlertService(val alertClient: AlertClient) {
 
     private val log: Logger = LoggerFactory.getLogger(AlertService::class.qualifiedName)
 
-    fun findMatchesAlive(): List<MatchStat> =
+    fun findMatchesAlive(): List<DashboardDTO> =
         try {
-            alertClient.findMatches().let { response ->
+            alertClient.getMatches().let { response ->
                 if (response.statusCode == HttpStatus.OK) {
-                    return response.body!!.matches
+                    return response.body!!
                 }
                 log.error("stage=error-alert-service-find-matches, msg=matches not found, status=${response.statusCode}")
                 throw IntegrationException("matches-not-found")
