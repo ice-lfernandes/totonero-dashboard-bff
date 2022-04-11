@@ -36,7 +36,7 @@ class AlertService(val alertClient: AlertClient) {
         try {
             alertClient.findTeamProfile(teamId, name).let { response ->
                 if (response.statusCode == HttpStatus.OK) {
-                    return response.body!!.teamProfileDTO
+                    return response.body!!
                 }
                 log.error("stage=error-alert-service-find-team, msg=matches not found, status=${response.statusCode}")
                 throw IntegrationException("matches-not-found")
