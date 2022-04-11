@@ -6,6 +6,8 @@ data class DashboardDTO(
     val minutesOfMatch: Int = 0,
     val homeName: String = "",
     val awayName: String = "",
+    val homeId: String = "",
+    val awayId: String = "",
     val homeScore: Int = 0,
     val awayScore: Int = 0,
     val betId: Long = 1L,

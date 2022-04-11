@@ -3,8 +3,7 @@ package com.totonero.dashboard.integration.alert.service
 import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.integration.alert.client.AlertClient
 import com.totonero.dashboard.integration.alert.dto.DashboardDTO
-import com.totonero.dashboard.integration.alert.dto.MatchStat
-import com.totonero.dashboard.integration.alert.dto.TeamDTO
+import com.totonero.dashboard.integration.alert.dto.TeamProfileDTO
 import feign.FeignException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -33,11 +32,11 @@ class AlertService(val alertClient: AlertClient) {
             throw IntegrationException(exception.message!!)
         }
 
-    fun findTeamProfile(teamId: String): TeamDTO =
+    fun findTeamProfileName(name: String, teamId: String): TeamProfileDTO =
         try {
-            alertClient.findTeam(teamId).let { response ->
+            alertClient.findTeamProfile(teamId, name).let { response ->
                 if (response.statusCode == HttpStatus.OK) {
-                    return response.body!!.teamDTO
+                    return response.body!!.teamProfileDTO
                 }
                 log.error("stage=error-alert-service-find-team, msg=matches not found, status=${response.statusCode}")
                 throw IntegrationException("matches-not-found")
