@@ -1,5 +1,6 @@
 package com.totonero.dashboard.graphql.resolvers
 
+import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.graphql.dto.Match
 import com.totonero.dashboard.graphql.dto.Team
 import com.totonero.dashboard.integration.alert.dto.TypeStat
@@ -19,6 +20,7 @@ class MatchQueryResolver(
     private val log: Logger = LoggerFactory.getLogger(GraphQLQueryResolver::class.qualifiedName)
 
     fun matches(): List<Match> {
+        log.info("stage=checking-matches-alive")
         val listMatches = mutableListOf<Match>()
         alertService.findMatchesAlive().parallelStream().forEach { dashboardDTO ->
             try {
@@ -36,7 +38,7 @@ class MatchQueryResolver(
                         minutesOfMatch = dashboardDTO.minutesOfMatch.toString(),
                         home = Team(
                             name = dashboardDTO.homeName,
-                            logo = alertService.findTeamProfileName(dashboardDTO.homeName, dashboardDTO.homeId).urlImageLogo,
+                            logo = getUrlLogoImage(dashboardDTO.homeName, dashboardDTO.homeId),
                             score = dashboardDTO.homeScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.home ?: "0" },
@@ -51,7 +53,7 @@ class MatchQueryResolver(
                         ),
                         away = Team(
                             name = dashboardDTO.awayName,
-                            logo = alertService.findTeamProfileName(dashboardDTO.awayName, dashboardDTO.awayId).urlImageLogo,
+                            logo = getUrlLogoImage(dashboardDTO.awayName, dashboardDTO.awayId),
                             score = dashboardDTO.awayScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.away ?: "0" },
@@ -70,7 +72,16 @@ class MatchQueryResolver(
                 log.warn("stage=error-get-match, match=$dashboardDTO")
             }
         }
+        log.info("stage=returning-matches-alive")
         return listMatches
     }
+
+    private fun getUrlLogoImage(name: String, id: String) =
+        try {
+            alertService.findTeamProfileName(name, id).urlImageLogo
+        } catch (exception: IntegrationException) {
+            log.error("stage=error-get-logo, name=$name, id=$id", exception)
+            ""
+        }
 
 }
