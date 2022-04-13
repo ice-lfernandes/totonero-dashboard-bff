@@ -81,7 +81,7 @@ class MatchQueryResolver(
             alertService.findTeamProfileName(name, id).urlImageLogo
         } catch (exception: IntegrationException) {
             log.error("stage=error-get-logo, name=$name, id=$id", exception)
-            ""
+            "https://api.sofascore.app/api/v1/team/400455/image"
         }
 
 }
