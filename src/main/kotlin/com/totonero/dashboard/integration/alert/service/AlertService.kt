@@ -49,5 +49,22 @@ class AlertService(val alertClient: AlertClient) {
             throw IntegrationException(exception.message!!)
         }
 
+    fun findTeamProfileByTeamId(teamId: String): TeamProfileDTO =
+        try {
+            alertClient.findTeamProfileByTeamId(teamId).let { response ->
+                if (response.statusCode == HttpStatus.OK) {
+                    return response.body!!
+                }
+                log.error("stage=error-alert-service-find-team, msg=matches not found, status=${response.statusCode}")
+                throw IntegrationException("matches-not-found")
+            }
+        } catch (exception: FeignException) {
+            log.error(
+                "stage=error-alert-service-find-team, msg=${exception.message}, status=${exception.status()}",
+                exception
+            )
+            throw IntegrationException(exception.message!!)
+        }
+
 
 }

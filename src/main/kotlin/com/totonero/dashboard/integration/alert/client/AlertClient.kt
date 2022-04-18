@@ -19,4 +19,7 @@ interface AlertClient {
 
     @RequestMapping(path = ["/team-profile"], method = [RequestMethod.GET])
     fun findTeamProfile(@RequestParam teamId: String, @RequestParam name: String) : ResponseEntity<TeamProfileDTO>
+
+    @RequestMapping(path = ["/team"], method = [RequestMethod.GET])
+    fun findTeamProfileByTeamId(@RequestParam teamId: String): ResponseEntity<TeamProfileDTO>
 }

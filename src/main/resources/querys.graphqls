@@ -1,3 +1,4 @@
 type Query {
-    matches: [Match]
+    matches: [Match],
+    matchesLocal: [Match]
 }

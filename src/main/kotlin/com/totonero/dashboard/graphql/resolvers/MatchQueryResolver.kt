@@ -3,9 +3,11 @@ package com.totonero.dashboard.graphql.resolvers
 import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.graphql.dto.Match
 import com.totonero.dashboard.graphql.dto.Team
+import com.totonero.dashboard.integration.alert.dto.DashboardDTO
 import com.totonero.dashboard.integration.alert.dto.TypeStat
 import com.totonero.dashboard.integration.alert.service.AlertService
 import com.totonero.dashboard.integration.analysis.service.AnalysisService
+import com.totonero.dashboard.integration.automation.service.AutomationService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -14,7 +16,8 @@ import org.springframework.stereotype.Component
 @Component
 class MatchQueryResolver(
     val alertService: AlertService,
-    val analysisService: AnalysisService
+    val analysisService: AnalysisService,
+    val automationService: AutomationService
 ) : GraphQLQueryResolver {
 
     private val log: Logger = LoggerFactory.getLogger(GraphQLQueryResolver::class.qualifiedName)
@@ -28,6 +31,7 @@ class MatchQueryResolver(
                     Match(
                         matchId = dashboardDTO.matchId.toString(),
                         betName = dashboardDTO.betName,
+                        urlBet365 = getUrlBet365(dashboardDTO),
                         score = analysisService.getScore(
                             betId = dashboardDTO.betId,
                             rulesId = dashboardDTO.rulesId,
@@ -38,7 +42,7 @@ class MatchQueryResolver(
                         minutesOfMatch = dashboardDTO.minutesOfMatch.toString(),
                         home = Team(
                             name = dashboardDTO.homeName,
-                            logo = getUrlLogoImage(dashboardDTO.homeName, dashboardDTO.homeId),
+                            logo = getUrlLogoImage(dashboardDTO.homeId),
                             score = dashboardDTO.homeScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.home ?: "0" },
@@ -53,7 +57,7 @@ class MatchQueryResolver(
                         ),
                         away = Team(
                             name = dashboardDTO.awayName,
-                            logo = getUrlLogoImage(dashboardDTO.awayName, dashboardDTO.awayId),
+                            logo = getUrlLogoImage(dashboardDTO.awayId),
                             score = dashboardDTO.awayScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.away ?: "0" },
@@ -76,12 +80,113 @@ class MatchQueryResolver(
         return listMatches
     }
 
-    private fun getUrlLogoImage(name: String, id: String) =
+    private fun getUrlBet365(dashboardDTO: DashboardDTO): String? =
         try {
-            alertService.findTeamProfileName(name, id).urlImageLogo
+            automationService.isMarketCornersCardsOpen(
+                dashboardDTO.homeName,
+                dashboardDTO.awayName
+            ).url
         } catch (exception: IntegrationException) {
-            log.error("stage=error-get-logo, name=$name, id=$id", exception)
+            log.error(
+                "stage=error-get-logo, homeName=$dashboardDTO.homeName, awayName=$dashboardDTO.awayName",
+                exception
+            )
+            null
+        }
+
+    private fun getUrlLogoImage(id: String) =
+        try {
+            alertService.findTeamProfileByTeamId(id).urlImageLogo
+        } catch (exception: IntegrationException) {
+            log.error("stage=error-get-logo, id=$id", exception)
             "https://api.sofascore.app/api/v1/team/400455/image"
         }
 
+    fun matchesLocal(): List<Match> {
+        return listOf(
+            Match(
+                matchId = "123456789",
+                leagueName = "Campeonato Brasileiro",
+                score = 750,
+                betName = "LIMIT 2T",
+                minutesOfMatch = "86",
+                urlBet365 = "http://globo.com",
+                home = Team(
+                    name = "Flamengo",
+                    score = 2,
+                    logo = "https://api.sofascore.app/api/v1/team/5981/image",
+                    shotOnGoal = 7,
+                    shotOffGoal = 5,
+                    ballPossession = "65",
+                    cornerKick = 7,
+                    redCard = 0
+                ),
+                away = Team(
+                    name = "Palmeiras",
+                    score = 1,
+                    logo = "https://api.sofascore.app/api/v1/team/1963/image",
+                    shotOnGoal = 7,
+                    shotOffGoal = 5,
+                    ballPossession = "65",
+                    cornerKick = 7,
+                    redCard = 1
+                )
+            ),
+            Match(
+                matchId = "123456789",
+                leagueName = "Campeonato Brasileiro",
+                score = 950,
+                betName = "LIMIT 2T",
+                minutesOfMatch = "86",
+                home = Team(
+                    name = "Flamengo",
+                    score = 2,
+                    logo = "https://api.sofascore.app/api/v1/team/5981/image",
+                    shotOnGoal = 7,
+                    shotOffGoal = 5,
+                    ballPossession = "65",
+                    cornerKick = 7,
+                    redCard = 0
+                ),
+                away = Team(
+                    name = "Palmeiras",
+                    score = 1,
+                    logo = "https://api.sofascore.app/api/v1/team/1963/image",
+                    shotOnGoal = 7,
+                    shotOffGoal = 5,
+                    ballPossession = "65",
+                    cornerKick = 7,
+                    redCard = 1
+                )
+            ),
+            Match(
+                matchId = "123456789",
+                leagueName = "Campeonato Brasileiro",
+                score = 1000,
+                betName = "LIMIT 2T",
+                minutesOfMatch = "86",
+                urlBet365 = "http://globo.com",
+                home = Team(
+                    name = "Flamengo",
+                    score = 2,
+                    logo = "https://api.sofascore.app/api/v1/team/5981/image",
+                    shotOnGoal = 7,
+                    shotOffGoal = 5,
+                    ballPossession = "65",
+                    cornerKick = 7,
+                    redCard = 0
+                ),
+                away = Team(
+                    name = "Palmeiras",
+                    score = 1,
+                    logo = "https://api.sofascore.app/api/v1/team/1963/image",
+                    shotOnGoal = 7,
+                    shotOffGoal = 5,
+                    ballPossession = "65",
+                    cornerKick = 7,
+                    redCard = 1
+                )
+            )
+        )
+    }
 }

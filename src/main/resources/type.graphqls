@@ -6,6 +6,7 @@ type Match {
     home: Team!
     away: Team!
     betName: String!
+    urlBet365: String
 }
 
 type Team {
