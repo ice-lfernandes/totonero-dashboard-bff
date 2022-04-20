@@ -17,6 +17,6 @@ interface AlertClient {
     @RequestMapping(path = ["/dash/matchs"], method = [RequestMethod.GET])
     fun getMatches(): ResponseEntity<List<DashboardDTO>>
 
-    @RequestMapping(path = ["/team-profile"], method = [RequestMethod.GET])
+    @RequestMapping(path = ["/team-profile/team"], method = [RequestMethod.GET])
     fun findTeamProfileByTeamId(@RequestParam teamId: String): ResponseEntity<TeamProfileDTO>
 }
