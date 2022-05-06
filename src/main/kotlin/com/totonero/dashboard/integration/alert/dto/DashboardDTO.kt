@@ -15,4 +15,5 @@ data class DashboardDTO(
     val rulesId: List<Long> = listOf(),
     val favoriteTeamId: Long = 1L,
     val stats: List<Stats> = listOf(),
+    val urlMatch: String = ""
 )

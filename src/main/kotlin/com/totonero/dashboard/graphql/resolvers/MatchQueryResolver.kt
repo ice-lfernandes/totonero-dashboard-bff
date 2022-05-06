@@ -31,7 +31,7 @@ class MatchQueryResolver(
                     Match(
                         matchId = dashboardDTO.matchId.toString(),
                         betName = dashboardDTO.betName,
-                        urlBet365 = getUrlBet365(dashboardDTO),
+                        urlBet365 = dashboardDTO.urlMatch,
                         score = analysisService.getScore(
                             betId = dashboardDTO.betId,
                             rulesId = dashboardDTO.rulesId,
@@ -79,20 +79,6 @@ class MatchQueryResolver(
         log.info("stage=returning-matches-alive")
         return listMatches
     }
-
-    private fun getUrlBet365(dashboardDTO: DashboardDTO): String? =
-        try {
-            automationService.isMarketCornersCardsOpen(
-                dashboardDTO.homeName,
-                dashboardDTO.awayName
-            ).url
-        } catch (exception: IntegrationException) {
-            log.error(
-                "stage=error-get-logo, homeName=$dashboardDTO.homeName, awayName=$dashboardDTO.awayName",
-                exception
-            )
-            null
-        }
 
     private fun getUrlLogoImage(id: String) =
         try {
