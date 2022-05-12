@@ -1,6 +1,6 @@
 package com.totonero.dashboard.graphql.dto
-
 data class Bet(
+    val id: Long = 1L,
     val name: String = "",
     val scoreMinimumEntry: Int = 0,
     val scoreEntry: Int = 0,

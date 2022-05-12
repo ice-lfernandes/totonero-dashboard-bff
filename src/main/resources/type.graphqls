@@ -23,6 +23,7 @@ type Team {
 }
 
 type Bet {
+    id: ID!
     name: String!
     scoreMinimumEntry: Int!
     scoreEntry: Int!

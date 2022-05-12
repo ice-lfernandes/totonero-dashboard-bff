@@ -17,6 +17,7 @@ class BetQueryResolver(
 
     fun bets(): List<Bet> = betTypeService.findAllBets().map {
         Bet(
+            id = it.id,
             name = it.name,
             automaticSendTelegram = true,
             maximumAdvantageInResult = it.maximumAdvantageInResult,
