@@ -14,8 +14,22 @@ type Team {
     score: Int!
     redCard: Int
     cornerKick: Int
+    attacks: Int
+    dangerousAttack: Int
     shotOnGoal: Int
     shotOffGoal: Int
     ballPossession: String
     logo: String
+}
+
+type Bet {
+    name: String!
+    scoreMinimumEntry: Int!
+    scoreEntry: Int!
+    periodMatch: String!
+    minimumDashMinute: Int!
+    maximumDashMinute: Int!
+    maximumAdvantageInResult: Int!
+    templateMessageTelegram: String!
+    automaticSendTelegram: Boolean!
 }

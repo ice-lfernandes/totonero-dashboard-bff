@@ -1,4 +1,5 @@
 type Query {
     matches: [Match],
     matchesLocal: [Match]
+    bets: [Bet]
 }

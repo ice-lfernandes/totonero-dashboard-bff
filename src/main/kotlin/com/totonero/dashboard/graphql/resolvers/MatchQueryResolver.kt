@@ -3,7 +3,6 @@ package com.totonero.dashboard.graphql.resolvers
 import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.graphql.dto.Match
 import com.totonero.dashboard.graphql.dto.Team
-import com.totonero.dashboard.integration.alert.dto.DashboardDTO
 import com.totonero.dashboard.integration.alert.dto.TypeStat
 import com.totonero.dashboard.integration.alert.service.AlertService
 import com.totonero.dashboard.integration.analysis.service.AnalysisService
@@ -46,6 +45,10 @@ class MatchQueryResolver(
                             score = dashboardDTO.homeScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.home ?: "0" },
+                            attacks = dashboardDTO.stats.find { it.typeStat == TypeStat.ATTACKS }
+                                .let { stats -> stats?.home ?: "0" }.toInt(),
+                            dangerousAttack = dashboardDTO.stats.find { it.typeStat == TypeStat.DANGEROUS_ATTACKS }
+                                .let { stats -> stats?.home ?: "0" }.toInt(),
                             shotOnGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_ON_TARGET }
                                 .let { stats -> stats?.home ?: "0" }).toInt(),
                             shotOffGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_OFF_TARGET }
@@ -61,7 +64,9 @@ class MatchQueryResolver(
                             score = dashboardDTO.awayScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.away ?: "0" },
-                            shotOnGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_ON_TARGET }
+                            attacks = (dashboardDTO.stats.find { it.typeStat == TypeStat.ATTACKS }
+                                .let { stats -> stats?.away ?: "0" }).toInt(),
+                            dangerousAttack = (dashboardDTO.stats.find { it.typeStat == TypeStat.DANGEROUS_ATTACKS }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
                             shotOffGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_OFF_TARGET }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
