@@ -26,7 +26,9 @@ class BetQueryResolver(
             scoreEntry = it.score,
             periodMatch = if (it.isFirstHalf) "1T" else "2T",
             scoreMinimumEntry = it.score,
-            templateMessageTelegram = "Testando..."
+            templateMessageTelegram = "Testando...",
+            minimumOdd = it.minimumOdd,
+            unit = it.unit
         )
     }
 

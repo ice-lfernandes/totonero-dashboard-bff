@@ -25,6 +25,8 @@ type Team {
 type Bet {
     id: ID!
     name: String!
+    unit: Float!
+    minimumOdd: Float!
     scoreMinimumEntry: Int!
     scoreEntry: Int!
     periodMatch: String!
