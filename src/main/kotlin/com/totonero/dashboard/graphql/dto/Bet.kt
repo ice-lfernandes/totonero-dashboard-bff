@@ -11,5 +11,6 @@ data class Bet(
     val maximumDashMinute: Int = 0,
     val maximumAdvantageInResult: Int = 0,
     val templateMessageTelegram: String = "",
-    val automaticSendTelegram: Boolean = false
+    val automaticSendTelegram: Boolean = false,
+    val rules: List<Rule> = listOf()
 )

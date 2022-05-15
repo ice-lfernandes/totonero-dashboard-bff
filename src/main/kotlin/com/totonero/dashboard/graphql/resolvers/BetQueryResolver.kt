@@ -2,7 +2,6 @@ package com.totonero.dashboard.graphql.resolvers
 
 import com.totonero.dashboard.graphql.dto.Bet
 import com.totonero.dashboard.graphql.dto.Rule
-import com.totonero.dashboard.integration.bettype.dto.BetDTO
 import com.totonero.dashboard.integration.bettype.service.BetTypeService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.slf4j.Logger
@@ -29,7 +28,21 @@ class BetQueryResolver(
             scoreMinimumEntry = it.score,
             templateMessageTelegram = "Testando...",
             minimumOdd = it.minimumOdd,
-            unit = it.unit
+            unit = it.unit,
+            rules = betTypeService.findRulesByBetId(it.id).map { ruleResponseDTO ->
+                Rule(
+                    id = ruleResponseDTO.id,
+                    type = ruleResponseDTO.type,
+                    value = ruleResponseDTO.value,
+                    score = ruleResponseDTO.score,
+                    name = ruleResponseDTO.name,
+                    isEqual = ruleResponseDTO.isEqual,
+                    isMandatory = ruleResponseDTO.isMandatory,
+                    isUnderdogTeam = ruleResponseDTO.isUnderdogTeam,
+                    isMandatoryAfterRedCard = ruleResponseDTO.isMandatoryAfterRedCard,
+                    ruleParentId = ruleResponseDTO.ruleParentId
+                )
+            }
         )
     }
 

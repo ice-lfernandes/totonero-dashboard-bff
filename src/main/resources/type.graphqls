@@ -35,6 +35,7 @@ type Bet {
     maximumAdvantageInResult: Int!
     templateMessageTelegram: String!
     automaticSendTelegram: Boolean!
+    rules: [Rule]
 }
 
 type Rule {
