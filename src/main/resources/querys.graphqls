@@ -2,4 +2,5 @@ type Query {
     matches: [Match],
     matchesLocal: [Match]
     bets: [Bet]
+    rules(betId: ID!): [Rule]
 }

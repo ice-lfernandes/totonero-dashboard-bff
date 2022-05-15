@@ -1,6 +1,7 @@
 package com.totonero.dashboard.graphql.resolvers
 
 import com.totonero.dashboard.graphql.dto.Bet
+import com.totonero.dashboard.graphql.dto.Rule
 import com.totonero.dashboard.integration.bettype.dto.BetDTO
 import com.totonero.dashboard.integration.bettype.service.BetTypeService
 import graphql.kickstart.tools.GraphQLQueryResolver
@@ -29,6 +30,21 @@ class BetQueryResolver(
             templateMessageTelegram = "Testando...",
             minimumOdd = it.minimumOdd,
             unit = it.unit
+        )
+    }
+
+    fun rules(betId: Long): List<Rule> = betTypeService.findRulesByBetId(betId).map {
+        Rule(
+            id = it.id,
+            type = it.type,
+            value = it.value,
+            score = it.score,
+            name = it.name,
+            isEqual = it.isEqual,
+            isMandatory = it.isMandatory,
+            isUnderdogTeam = it.isUnderdogTeam,
+            isMandatoryAfterRedCard = it.isMandatoryAfterRedCard,
+            ruleParentId = it.ruleParentId
         )
     }
 

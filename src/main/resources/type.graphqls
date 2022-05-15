@@ -36,3 +36,16 @@ type Bet {
     templateMessageTelegram: String!
     automaticSendTelegram: Boolean!
 }
+
+type Rule {
+    id: ID!
+    type: String!
+    name: String!
+    value: Int!
+    score: Int!
+    ruleParentId: Int!
+    isMandatory: Boolean!
+    isMandatoryAfterRedCard: Boolean!
+    isUnderdogTeam: Boolean!
+    isEqual: Boolean!
+}

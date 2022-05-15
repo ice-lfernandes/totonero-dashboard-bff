@@ -3,6 +3,7 @@ package com.totonero.dashboard.integration.bettype.service
 import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.integration.bettype.client.BetTypeClient
 import com.totonero.dashboard.integration.bettype.dto.BetDTO
+import com.totonero.dashboard.integration.bettype.dto.RuleResponseDTO
 import feign.FeignException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,6 +18,24 @@ class BetTypeService(val betTypeClient: BetTypeClient) {
     fun findAllBets(): List<BetDTO> {
         try {
             betTypeClient.findAll().let { response ->
+                if (response.statusCode == HttpStatus.OK) {
+                    return response.body!!
+                }
+                log.error("stage=error-bet-type-service, status=${response.statusCode}")
+                throw IntegrationException("error-integration")
+            }
+        } catch (exception: FeignException) {
+            log.error(
+                "stage=error-bet-type-service, msg=${exception.message}, status=${exception.status()}",
+                exception
+            )
+            throw IntegrationException(exception.message!!)
+        }
+    }
+
+    fun findRulesByBetId(betId: Long): List<RuleResponseDTO> {
+        try {
+            betTypeClient.findRulesByBetId(betId).let { response ->
                 if (response.statusCode == HttpStatus.OK) {
                     return response.body!!
                 }
