@@ -25,7 +25,7 @@ class BetQueryResolver(
             minimumDashMinute = it.minimumDashMinute,
             scoreEntry = it.score,
             periodMatch = if (it.isFirstHalf) "1T" else "2T",
-            scoreMinimumEntry = it.score,
+            scoreMinimumEntry = 850,
             templateMessageTelegram = "Testando...",
             minimumOdd = it.minimumOdd,
             unit = it.unit,
