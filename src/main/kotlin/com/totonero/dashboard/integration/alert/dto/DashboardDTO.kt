@@ -2,6 +2,7 @@ package com.totonero.dashboard.integration.alert.dto
 
 data class DashboardDTO(
     val matchId: Long = 1L,
+    val leagueId: Long = 0L,
     val leagueName: String = "",
     val minutesOfMatch: Int = 0,
     val homeName: String = "",

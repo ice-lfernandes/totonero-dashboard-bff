@@ -40,6 +40,7 @@ class MatchQueryResolver(
                         leagueName = dashboardDTO.leagueName,
                         minutesOfMatch = dashboardDTO.minutesOfMatch.toString(),
                         home = Team(
+                            id = dashboardDTO.homeId,
                             name = dashboardDTO.homeName,
                             logo = getUrlLogoImage(dashboardDTO.homeId),
                             score = dashboardDTO.homeScore,
@@ -59,6 +60,7 @@ class MatchQueryResolver(
                                 .let { stats -> stats?.home ?: "0" }).toInt()
                         ),
                         away = Team(
+                            id = dashboardDTO.awayId,
                             name = dashboardDTO.awayName,
                             logo = getUrlLogoImage(dashboardDTO.awayId),
                             score = dashboardDTO.awayScore,
@@ -79,7 +81,7 @@ class MatchQueryResolver(
                         )
                     )
                 )
-            } catch (exception: Exception) {
+            } catch (exception: Throwable) {
                 log.warn("stage=error-get-match, match=$dashboardDTO")
             }
         }

@@ -1,6 +1,7 @@
 package com.totonero.dashboard.graphql.dto
 
 data class Team(
+    val id: String = "",
     val name: String = "",
     val score: Int = 0,
     val ballPossession: String = "",
