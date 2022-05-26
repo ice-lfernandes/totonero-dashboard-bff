@@ -3,10 +3,9 @@ package com.totonero.dashboard.graphql.resolvers
 import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.graphql.dto.Match
 import com.totonero.dashboard.graphql.dto.Team
-import com.totonero.dashboard.integration.alert.dto.TypeStat
 import com.totonero.dashboard.integration.alert.service.AlertService
-import com.totonero.dashboard.integration.analysis.service.AnalysisService
-import com.totonero.dashboard.integration.automation.service.AutomationService
+import com.totonero.dashboard.integration.totonero.dto.enumerator.TypeStat
+import com.totonero.dashboard.integration.totonero.service.TotoneroService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -15,68 +14,61 @@ import org.springframework.stereotype.Component
 @Component
 class MatchQueryResolver(
     val alertService: AlertService,
-    val analysisService: AnalysisService,
-    val automationService: AutomationService
+    val totoneroService: TotoneroService
 ) : GraphQLQueryResolver {
 
     private val log: Logger = LoggerFactory.getLogger(GraphQLQueryResolver::class.qualifiedName)
 
-    fun matches(): List<Match> {
+    fun matches(token: String): List<Match> {
         log.info("stage=checking-matches-alive")
         val listMatches = mutableListOf<Match>()
-        alertService.findMatchesAlive().parallelStream().forEach { dashboardDTO ->
+        totoneroService.getMatches(token).parallelStream().forEach { dashboardDTO ->
             try {
                 listMatches.add(
                     Match(
-                        matchId = dashboardDTO.matchId.toString(),
-                        betName = dashboardDTO.betName,
-                        urlBet365 = dashboardDTO.urlMatch,
-                        score = analysisService.getScore(
-                            betId = dashboardDTO.betId,
-                            rulesId = dashboardDTO.rulesId,
-                            matchId = dashboardDTO.matchId,
-                            favoriteTeamId = dashboardDTO.favoriteTeamId
-                        ),
-                        leagueName = dashboardDTO.leagueName,
-                        minutesOfMatch = dashboardDTO.minutesOfMatch.toString(),
+                        matchId = dashboardDTO.matchDTO.matchId.toString(),
+                        betName = dashboardDTO.betDTO.name,
+                        score = dashboardDTO.scoreDTO.score,
+                        leagueName = dashboardDTO.matchDTO.leagueName,
+                        minutesOfMatch = dashboardDTO.matchDTO.minutesOfMatch.toString(),
                         home = Team(
-                            id = dashboardDTO.homeId,
-                            name = dashboardDTO.homeName,
-                            logo = getUrlLogoImage(dashboardDTO.homeId),
-                            score = dashboardDTO.homeScore,
-                            ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
+                            id = dashboardDTO.matchDTO.homeId.toString(),
+                            name = dashboardDTO.matchDTO.homeName,
+                            logo = getUrlLogoImage(dashboardDTO.matchDTO.homeId.toString()),
+                            score = dashboardDTO.matchDTO.homeScore,
+                            ballPossession = dashboardDTO.stats.find { it.typeStats == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.home ?: "0" },
-                            attacks = dashboardDTO.stats.find { it.typeStat == TypeStat.ATTACKS }
+                            attacks = dashboardDTO.stats.find { it.typeStats == TypeStat.ATTACKS }
                                 .let { stats -> stats?.home ?: "0" }.toInt(),
-                            dangerousAttack = dashboardDTO.stats.find { it.typeStat == TypeStat.DANGEROUS_ATTACKS }
+                            dangerousAttack = dashboardDTO.stats.find { it.typeStats == TypeStat.DANGEROUS_ATTACKS }
                                 .let { stats -> stats?.home ?: "0" }.toInt(),
-                            shotOnGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_ON_TARGET }
+                            shotOnGoal = (dashboardDTO.stats.find { it.typeStats == TypeStat.SHOTS_ON_TARGET }
                                 .let { stats -> stats?.home ?: "0" }).toInt(),
-                            shotOffGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_OFF_TARGET }
+                            shotOffGoal = (dashboardDTO.stats.find { it.typeStats == TypeStat.SHOTS_OFF_TARGET }
                                 .let { stats -> stats?.home ?: "0" }).toInt(),
-                            cornerKick = (dashboardDTO.stats.find { it.typeStat == TypeStat.CORNER }
+                            cornerKick = (dashboardDTO.stats.find { it.typeStats == TypeStat.CORNER }
                                 .let { stats -> stats?.home ?: "0" }).toInt(),
-                            redCard = (dashboardDTO.stats.find { it.typeStat == TypeStat.RED_CARD }
+                            redCard = (dashboardDTO.stats.find { it.typeStats == TypeStat.RED_CARD }
                                 .let { stats -> stats?.home ?: "0" }).toInt()
                         ),
                         away = Team(
-                            id = dashboardDTO.awayId,
-                            name = dashboardDTO.awayName,
-                            logo = getUrlLogoImage(dashboardDTO.awayId),
-                            score = dashboardDTO.awayScore,
-                            ballPossession = dashboardDTO.stats.find { it.typeStat == TypeStat.BALL_POSSESSION }
+                            id = dashboardDTO.matchDTO.awayId.toString(),
+                            name = dashboardDTO.matchDTO.awayName,
+                            logo = getUrlLogoImage(dashboardDTO.matchDTO.awayId.toString()),
+                            score = dashboardDTO.matchDTO.awayScore,
+                            ballPossession = dashboardDTO.stats.find { it.typeStats == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.away ?: "0" },
-                            attacks = (dashboardDTO.stats.find { it.typeStat == TypeStat.ATTACKS }
+                            attacks = (dashboardDTO.stats.find { it.typeStats == TypeStat.ATTACKS }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
-                            dangerousAttack = (dashboardDTO.stats.find { it.typeStat == TypeStat.DANGEROUS_ATTACKS }
+                            dangerousAttack = (dashboardDTO.stats.find { it.typeStats == TypeStat.DANGEROUS_ATTACKS }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
-                            shotOnGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_ON_TARGET }
+                            shotOnGoal = (dashboardDTO.stats.find { it.typeStats == TypeStat.SHOTS_ON_TARGET }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
-                            shotOffGoal = (dashboardDTO.stats.find { it.typeStat == TypeStat.SHOTS_OFF_TARGET }
+                            shotOffGoal = (dashboardDTO.stats.find { it.typeStats == TypeStat.SHOTS_OFF_TARGET }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
-                            cornerKick = (dashboardDTO.stats.find { it.typeStat == TypeStat.CORNER }
+                            cornerKick = (dashboardDTO.stats.find { it.typeStats == TypeStat.CORNER }
                                 .let { stats -> stats?.away ?: "0" }).toInt(),
-                            redCard = (dashboardDTO.stats.find { it.typeStat == TypeStat.RED_CARD }
+                            redCard = (dashboardDTO.stats.find { it.typeStats == TypeStat.RED_CARD }
                                 .let { stats -> stats?.away ?: "0" }).toInt()
                         )
                     )

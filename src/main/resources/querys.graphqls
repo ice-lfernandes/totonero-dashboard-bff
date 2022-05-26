@@ -1,5 +1,5 @@
 type Query {
-    matches: [Match],
+    matches(token: String!): [Match],
     matchesLocal: [Match]
     bets: [Bet]
     rules(betId: ID!): [Rule]
