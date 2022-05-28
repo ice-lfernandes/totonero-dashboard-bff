@@ -1,6 +1,6 @@
 type Query {
     matches(token: String!): [Match],
-    matchesLocal: [Match]
+    matchesLocal(token: String!): [Match]
     bets: [Bet]
     rules(betId: ID!): [Rule]
 }

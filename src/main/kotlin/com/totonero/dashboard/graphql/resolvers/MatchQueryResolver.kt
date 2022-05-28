@@ -26,19 +26,19 @@ class MatchQueryResolver(
             try {
                 listMatches.add(
                     Match(
-                        matchId = dashboardDTO.matchDTO.matchId.toString(),
+                        matchId = dashboardDTO.match.matchId.toString(),
                         betName = dashboardDTO.nameBet,
                         score = dashboardDTO.score,
                         minimumScore = dashboardDTO.minimumScore,
                         goodScore = dashboardDTO.goodScore,
                         greatScore = dashboardDTO.greatScore,
-                        leagueName = dashboardDTO.matchDTO.leagueName,
-                        minutesOfMatch = dashboardDTO.matchDTO.minutesOfMatch.toString(),
+                        leagueName = dashboardDTO.match.leagueName,
+                        minutesOfMatch = dashboardDTO.match.minutesOfMatch.toString(),
                         home = Team(
-                            id = dashboardDTO.matchDTO.homeId.toString(),
-                            name = dashboardDTO.matchDTO.homeName,
-                            logo = getUrlLogoImage(dashboardDTO.matchDTO.homeId.toString()),
-                            score = dashboardDTO.matchDTO.homeScore,
+                            id = dashboardDTO.match.homeId.toString(),
+                            name = dashboardDTO.match.homeName,
+                            logo = getUrlLogoImage(dashboardDTO.match.homeId.toString()),
+                            score = dashboardDTO.match.homeScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStats == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.home ?: "0" },
                             attacks = dashboardDTO.stats.find { it.typeStats == TypeStat.ATTACKS }
@@ -55,10 +55,10 @@ class MatchQueryResolver(
                                 .let { stats -> stats?.home ?: "0" }).toInt()
                         ),
                         away = Team(
-                            id = dashboardDTO.matchDTO.awayId.toString(),
-                            name = dashboardDTO.matchDTO.awayName,
-                            logo = getUrlLogoImage(dashboardDTO.matchDTO.awayId.toString()),
-                            score = dashboardDTO.matchDTO.awayScore,
+                            id = dashboardDTO.match.awayId.toString(),
+                            name = dashboardDTO.match.awayName,
+                            logo = getUrlLogoImage(dashboardDTO.match.awayId.toString()),
+                            score = dashboardDTO.match.awayScore,
                             ballPossession = dashboardDTO.stats.find { it.typeStats == TypeStat.BALL_POSSESSION }
                                 .let { stats -> stats?.away ?: "0" },
                             attacks = (dashboardDTO.stats.find { it.typeStats == TypeStat.ATTACKS }
@@ -92,12 +92,15 @@ class MatchQueryResolver(
             "https://api.sofascore.app/api/v1/team/400455/image"
         }
 
-    fun matchesLocal(): List<Match> {
+    fun matchesLocal(token: String): List<Match> {
         return listOf(
             Match(
                 matchId = "123456789",
                 leagueName = "Campeonato Brasileiro",
                 score = 750,
+                minimumScore = 500,
+                goodScore = 800,
+                greatScore = 1200,
                 betName = "LIMIT 2T",
                 minutesOfMatch = "86",
                 urlBet365 = "http://globo.com",
@@ -126,6 +129,9 @@ class MatchQueryResolver(
                 matchId = "123456789",
                 leagueName = "Campeonato Brasileiro",
                 score = 950,
+                minimumScore = 500,
+                goodScore = 800,
+                greatScore = 1200,
                 betName = "LIMIT 2T",
                 minutesOfMatch = "86",
                 home = Team(
@@ -152,7 +158,10 @@ class MatchQueryResolver(
             Match(
                 matchId = "123456789",
                 leagueName = "Campeonato Brasileiro",
-                score = 1000,
+                score = 1200,
+                minimumScore = 500,
+                goodScore = 800,
+                greatScore = 1200,
                 betName = "LIMIT 2T",
                 minutesOfMatch = "86",
                 urlBet365 = "http://globo.com",

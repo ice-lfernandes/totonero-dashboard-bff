@@ -3,15 +3,12 @@ package com.totonero.dashboard.integration.totonero.dto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.totonero.dashboard.integration.totonero.dto.enumerator.AcquireType
-import com.totonero.dashboard.integration.totonero.dto.enumerator.Comparator
-import com.totonero.dashboard.integration.totonero.dto.enumerator.TeamType
 import com.totonero.dashboard.integration.totonero.dto.enumerator.TypeStat
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class DashboardDTO(
-    val matchDTO: MatchDTO = MatchDTO(),
+    val match: MatchDTO = MatchDTO(),
     val nameBet: String = "",
     val score: Int = 0,
     val goodScore: Int = 0,
