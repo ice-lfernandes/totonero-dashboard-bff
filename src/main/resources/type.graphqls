@@ -1,5 +1,8 @@
 type Match {
-    score: Int
+    score: Int!,
+    minimumScore: Int!,
+    goodScore: Int!,
+    greatScore: Int!,
     matchId: String!
     leagueName: String!
     leagueId: Int!

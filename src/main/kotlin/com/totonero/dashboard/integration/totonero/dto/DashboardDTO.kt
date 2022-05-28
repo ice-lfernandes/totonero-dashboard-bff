@@ -12,9 +12,11 @@ import com.totonero.dashboard.integration.totonero.dto.enumerator.TypeStat
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class DashboardDTO(
     val matchDTO: MatchDTO = MatchDTO(),
-    val betDTO: BetDTO = BetDTO(),
-    val scoreDTO: ScoreDTO = ScoreDTO(),
-//    val mandatoryBetRulesNotReached: List<RuleDTO> = listOf(),
+    val nameBet: String = "",
+    val score: Int = 0,
+    val goodScore: Int = 0,
+    val greatScore: Int = 0,
+    val minimumScore: Int = 0,
     val stats: List<StatsEventDTO> = listOf()
 )
 
@@ -31,43 +33,6 @@ data class MatchDTO(
     val awayName: String = "",
     val homeScore: Int = 0,
     val awayScore: Int = 0
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class BetDTO(
-    val id: Long = 1L,
-    val minimumScore: Int = 0,
-    val goodScore: Int = 0,
-    val score: Int = 0,
-    val name: String = "",
-    val nameSimples: String = ""
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class RuleDTO(
-    val name: String = "",
-    val value: Int? = null,
-    val score: Int = 0,
-    @JsonProperty("team") val teamType: TeamType? = null,
-    val comparator: Comparator? = null
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class ScoreDTO(
-//    val rule: List<RuleDTO> = listOf(),
-//    val acquire: List<AcquireDTO> = listOf(),
-    val score: Int = 0
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class AcquireDTO(
-    val type: AcquireType = AcquireType.LEAGUE_SCORE,
-    val name: String = "",
-    val score: Int = 0
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

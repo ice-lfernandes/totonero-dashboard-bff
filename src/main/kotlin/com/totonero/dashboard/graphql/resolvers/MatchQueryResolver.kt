@@ -27,8 +27,11 @@ class MatchQueryResolver(
                 listMatches.add(
                     Match(
                         matchId = dashboardDTO.matchDTO.matchId.toString(),
-                        betName = dashboardDTO.betDTO.name,
-                        score = dashboardDTO.scoreDTO.score,
+                        betName = dashboardDTO.nameBet,
+                        score = dashboardDTO.score,
+                        minimumScore = dashboardDTO.minimumScore,
+                        goodScore = dashboardDTO.goodScore,
+                        greatScore = dashboardDTO.greatScore,
                         leagueName = dashboardDTO.matchDTO.leagueName,
                         minutesOfMatch = dashboardDTO.matchDTO.minutesOfMatch.toString(),
                         home = Team(

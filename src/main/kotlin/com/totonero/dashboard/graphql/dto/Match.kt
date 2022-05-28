@@ -8,6 +8,9 @@ data class Match(
     val home: Team = Team(),
     val away: Team = Team(),
     val score: Int = 0,
+    val minimumScore: Int = 0,
+    val goodScore: Int = 0,
+    val greatScore: Int = 0,
     val betName: String = "",
     val urlBet365: String? = null
 )
