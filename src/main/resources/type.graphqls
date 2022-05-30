@@ -35,8 +35,8 @@ type Bet {
     scoreMinimumEntry: Int!
     scoreEntry: Int!
     periodMatch: String!
-    minimumDashMinute: Int!
-    maximumDashMinute: Int!
+    minimumDashMinute: Int
+    maximumDashMinute: Int
     maximumAdvantageInResult: Int!
     templateMessageTelegram: String!
     automaticSendTelegram: Boolean!
@@ -50,8 +50,16 @@ type Rule {
     value: Int!
     score: Int!
     ruleParentId: Int!
-    isMandatory: Boolean!
-    isMandatoryAfterRedCard: Boolean!
-    isUnderdogTeam: Boolean!
-    isEqual: Boolean!
+    mandatory: Boolean!
+    mandatoryAfterRedCard: Boolean!
+    comparator: Comparator,
+    teamType: TeamType
+}
+
+enum Comparator {
+    LESS, MORE, EQUAL
+}
+
+enum TeamType {
+    FAVORITE, UNDERDOG, BOTH
 }

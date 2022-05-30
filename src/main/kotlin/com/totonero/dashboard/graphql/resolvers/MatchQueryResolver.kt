@@ -33,7 +33,7 @@ class MatchQueryResolver(
                         goodScore = dashboardDTO.goodScore,
                         greatScore = dashboardDTO.greatScore,
                         leagueName = dashboardDTO.match.leagueName,
-                        minutesOfMatch = dashboardDTO.match.minutesOfMatch.toString(),
+                        minutesOfMatch = dashboardDTO.match.matchMinute.toString(),
                         home = Team(
                             id = dashboardDTO.match.homeId.toString(),
                             name = dashboardDTO.match.homeName,

@@ -1,5 +1,8 @@
 package com.totonero.dashboard.graphql.dto
 
+import com.totonero.dashboard.integration.totonero.dto.enumerator.Comparator
+import com.totonero.dashboard.integration.totonero.dto.enumerator.TeamType
+
 data class Rule(
     val id: Long = 0L,
     val type: String = "",
@@ -7,8 +10,8 @@ data class Rule(
     val value: Int = 0,
     val score: Int = 0,
     val ruleParentId: Long = 0L,
-    val isMandatory: Boolean = false,
-    val isMandatoryAfterRedCard: Boolean = false,
-    val isUnderdogTeam: Boolean = false,
-    val isEqual: Boolean = false
-)
+    val mandatory: Boolean = false,
+    val mandatoryAfterRedCard: Boolean = false,
+    val comparator: Comparator? = null,
+    val teamType: TeamType? = null
+    )

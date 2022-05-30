@@ -23,7 +23,7 @@ data class MatchDTO(
     val matchId: Long = 1L,
     val leagueId: Long = 1L,
     val leagueName: String = "",
-    val minutesOfMatch: Int = 0,
+    val matchMinute: Int = 0,
     val homeId: Long = 1L,
     val awayId: Long = 1L,
     val homeName: String = "",
