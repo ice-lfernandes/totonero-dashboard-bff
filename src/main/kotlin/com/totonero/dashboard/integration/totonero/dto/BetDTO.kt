@@ -1,6 +1,5 @@
 package com.totonero.dashboard.integration.totonero.dto
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.totonero.dashboard.integration.totonero.dto.enumerator.Comparator
 import com.totonero.dashboard.integration.totonero.dto.enumerator.ResultRequired
@@ -9,15 +8,17 @@ import com.totonero.dashboard.integration.totonero.dto.enumerator.TeamType
 
 data class BetDTO(
     val id: Long = 1L,
-    val parentId: Long = 1L,
+    val parentId: Long? = null,
     val name: String = "",
     val nameSimple: String = "",
     @JsonProperty("isFirstHalf") val firstHalf: Boolean = false,
     @JsonProperty("isEnabled") val enabled: Boolean = false,
+    @JsonProperty("isEqual") val equal: Boolean = false,
+    @JsonProperty("isCorner") val corner: Boolean = false,
     val customerId: Long = 1L,
     val betProperty: BetPropertyDTO = BetPropertyDTO(),
     val betDash: BetDashDTO? = null,
-    val betEntry: BetEntryDTO = BetEntryDTO(),
+    val betEntry: BetEntryDTO? = null,
     val betRules: List<BetRuleDTO> = listOf()
 )
 

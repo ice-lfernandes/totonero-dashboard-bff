@@ -2,4 +2,5 @@ type Query {
     matches(token: String!): [Match],
     matchesLocal(token: String!): [Match]
     bets(token: String!): [Bet]
+    rulesAvailable: [Rule]
 }

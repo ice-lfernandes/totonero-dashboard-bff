@@ -1,16 +1,22 @@
 package com.totonero.dashboard.graphql.dto
+
+import com.totonero.dashboard.integration.totonero.dto.enumerator.ResultRequired
+
 data class Bet(
     val id: Long = 1L,
     val name: String = "",
-    val minimumOdd: Double = 1.0,
-    val unit: Double = 0.0,
-    val scoreMinimumEntry: Int = 0,
-    val scoreEntry: Int = 0,
+    val enabled: Boolean = false,
+    val minimumScore: Int? = null,
+    val goodScore: Int? = null,
+    val greatScore: Int? = null,
     val periodMatch: String = "",
+    val resultRequired: ResultRequired = ResultRequired.FAVORITE_LOSING,
+    val equal: Boolean = false,
+    val corner: Boolean = false,
     val minimumDashMinute: Int? = null,
     val maximumDashMinute: Int? = null,
     val maximumAdvantageInResult: Int = 0,
     val templateMessageTelegram: String = "",
     val automaticSendTelegram: Boolean = false,
-    val rules: List<Rule> = listOf()
+    val rules: List<BetRule> = listOf()
 )

@@ -4,6 +4,7 @@ import com.totonero.dashboard.exception.IntegrationException
 import com.totonero.dashboard.integration.totonero.client.TotoneroClient
 import com.totonero.dashboard.integration.totonero.dto.BetDTO
 import com.totonero.dashboard.integration.totonero.dto.DashboardDTO
+import com.totonero.dashboard.integration.totonero.dto.RuleDTO
 import feign.FeignException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -37,6 +38,23 @@ class TotoneroService(val totoneroClient: TotoneroClient) {
     fun getAllBets(token: String): List<BetDTO> =
         try {
             totoneroClient.getAllBets("$tokenAuth $token").let { response ->
+                if (response.statusCode == HttpStatus.OK) {
+                    return response.body!!
+                }
+                log.error("stage=error-totonero-service, status=${response.statusCode}")
+                throw IntegrationException("error-integration")
+            }
+        } catch (exception: FeignException) {
+            log.error(
+                "stage=error-totonero-service, msg=${exception.message}, status=${exception.status()}",
+                exception
+            )
+            throw IntegrationException(exception.message!!)
+        }
+
+    fun getAllRulesAvailable(): List<RuleDTO> =
+        try {
+            totoneroClient.getAllRulesAvailable().let { response ->
                 if (response.statusCode == HttpStatus.OK) {
                     return response.body!!
                 }

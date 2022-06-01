@@ -2,6 +2,7 @@ package com.totonero.dashboard.integration.totonero.client
 
 import com.totonero.dashboard.integration.totonero.dto.BetDTO
 import com.totonero.dashboard.integration.totonero.dto.DashboardDTO
+import com.totonero.dashboard.integration.totonero.dto.RuleDTO
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestHeader
@@ -19,5 +20,8 @@ interface TotoneroClient {
 
     @RequestMapping(path = ["/bet"], method = [RequestMethod.GET])
     fun getAllBets(@RequestHeader("Authorization") token: String): ResponseEntity<List<BetDTO>>
+
+    @RequestMapping(path = ["/rule"], method = [RequestMethod.GET])
+    fun getAllRulesAvailable(): ResponseEntity<List<RuleDTO>>
 
 }

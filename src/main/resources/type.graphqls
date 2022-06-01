@@ -30,30 +30,48 @@ type Team {
 type Bet {
     id: ID!
     name: String!
-    unit: Float!
-    minimumOdd: Float!
-    scoreMinimumEntry: Int!
-    scoreEntry: Int!
+    minimumScore: Int!
+    enabled: Boolean!,
+    goodScore: Int!
+    greatScore: Int!
     periodMatch: String!
+    resultRequired: ResultRequired!
+    equal: Boolean!
+    corner: Boolean!
     minimumDashMinute: Int
     maximumDashMinute: Int
     maximumAdvantageInResult: Int!
     templateMessageTelegram: String!
     automaticSendTelegram: Boolean!
-    rules: [Rule]
+    rules: [BetRule]
 }
 
-type Rule {
-    id: ID!
-    type: String!
+input BetRequest {
     name: String!
+
+}
+
+type BetRule {
+    id: ID!
+    rule: Rule!
     value: Int!
     score: Int!
-    ruleParentId: Int!
+    ruleParentId: ID
     mandatory: Boolean!
     mandatoryAfterRedCard: Boolean!
     comparator: Comparator,
     teamType: TeamType
+}
+
+type Rule {
+    id: ID!
+    parentId: ID!
+    type: String!
+    name: String!
+}
+
+enum RuleType {
+    ALERT, ANALYSIS, ANALYZABLE, ACQUIRE
 }
 
 enum Comparator {
@@ -62,4 +80,8 @@ enum Comparator {
 
 enum TeamType {
     FAVORITE, UNDERDOG, BOTH
+}
+
+enum ResultRequired {
+    FAVORITE_WINNING, FAVORITE_TYING, FAVORITE_LOSING, FAVORITE_NOT_WINNING, FAVORITE_NOT_LOSING, FAVORITE_NOT_TYING
 }
